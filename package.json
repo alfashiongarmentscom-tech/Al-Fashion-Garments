@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
-    "framer-motion": "^13.1.0",
-    "react-hot-toast": "^2.6.0"
-  }
-}
