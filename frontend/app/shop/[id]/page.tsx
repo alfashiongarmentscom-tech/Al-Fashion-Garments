@@ -57,8 +57,46 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">Loading Details...</p>
+      <main className="min-h-screen bg-white pb-24 pt-4 md:pt-8 overflow-x-hidden">
+        <div className="max-w-[1400px] mx-auto px-0 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-16">
+          
+          {/* Left Column: Image Grid Skeleton */}
+          <div className="lg:w-2/3 flex overflow-x-hidden md:grid md:grid-cols-2 gap-1 md:gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-full shrink-0 md:w-auto aspect-[3/4] bg-zinc-100 animate-pulse" />
+            ))}
+          </div>
+
+          {/* Right Column: Details Skeleton */}
+          <div className="lg:w-1/3 relative px-4 md:px-0">
+            <div className="sticky top-24 flex flex-col pt-4 md:pt-0">
+              <div className="h-8 md:h-10 w-3/4 bg-zinc-200 animate-pulse mb-4" />
+              <div className="h-4 w-24 bg-zinc-200 animate-pulse mb-10" />
+
+              <div className="mb-8">
+                <div className="h-3 w-20 bg-zinc-200 animate-pulse mb-4" />
+                <div className="flex flex-wrap gap-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="w-14 h-14 border border-zinc-100 bg-zinc-50 animate-pulse" />
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-full h-14 bg-zinc-200 animate-pulse mb-10" />
+
+              <div className="space-y-4 mb-10">
+                <div className="h-3 w-32 bg-zinc-200 animate-pulse" />
+                <div className="space-y-2">
+                  <div className="h-3 w-full bg-zinc-100 animate-pulse" />
+                  <div className="h-3 w-full bg-zinc-100 animate-pulse" />
+                  <div className="h-3 w-5/6 bg-zinc-100 animate-pulse" />
+                  <div className="h-3 w-4/6 bg-zinc-100 animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
       </main>
     );
   }

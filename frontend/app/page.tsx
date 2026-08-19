@@ -28,9 +28,34 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-black text-xs font-bold uppercase tracking-widest animate-pulse">Loading AL Fashion Garments...</p>
-      </main>
+      <div className="flex flex-col min-h-screen bg-white text-black">
+        {/* Hero Skeleton */}
+        <div className="w-full h-[70vh] md:h-[85vh] bg-zinc-100 animate-pulse" />
+        
+        {/* Dynamic Category Sections Skeleton */}
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 py-16 md:py-24 flex flex-col gap-20 md:gap-32">
+          {[1, 2].map((groupIndex) => (
+            <section key={groupIndex} className="w-full">
+              <div className="flex justify-between items-end mb-8 border-b border-zinc-200 pb-4">
+                <div className="h-8 md:h-10 w-48 md:w-64 bg-zinc-200 animate-pulse" />
+                <div className="h-4 w-16 bg-zinc-200 animate-pulse" />
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] bg-zinc-200 border border-zinc-200">
+                {[1, 2, 3, 4].map((itemIndex) => (
+                  <div key={itemIndex} className="bg-white flex flex-col">
+                    <div className="w-full aspect-[3/4] bg-zinc-100 animate-pulse" />
+                    <div className="p-4 pt-5 pb-6 flex flex-col items-center border-t border-zinc-100">
+                      <div className="h-3 w-3/4 bg-zinc-200 animate-pulse mb-2" />
+                      <div className="h-3 w-1/2 bg-zinc-200 animate-pulse" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
     );
   }
 

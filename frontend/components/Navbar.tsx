@@ -14,10 +14,13 @@ export default function Navbar() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
 
-  // Close drawers on route change
+  // Close drawers on route change and force scroll to top
   useEffect(() => {
     setIsMenuOpen(false);
     setIsContactOpen(false);
+    
+    // Force the browser to jump instantly to the top of the new page
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
 
   // Lock body scroll when any drawer is open
@@ -92,7 +95,7 @@ export default function Navbar() {
         onClick={() => setIsMenuOpen(false)}
       />
       <div 
-        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] transform transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'}`}
       >
         <button 
           onClick={() => setIsMenuOpen(false)}
@@ -134,7 +137,7 @@ export default function Navbar() {
         onClick={() => setIsContactOpen(false)}
       />
       <div 
-        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] transform transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isContactOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full shadow-none'}`}
       >
         <button 
           onClick={() => setIsContactOpen(false)}

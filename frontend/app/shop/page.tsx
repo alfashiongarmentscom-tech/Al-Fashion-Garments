@@ -37,8 +37,40 @@ function ShopContent() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">Loading Collection...</p>
+      <main className="min-h-screen bg-white pb-20">
+        {/* Editorial Text Header Skeleton */}
+        <div className="w-full bg-white border-b border-zinc-200 px-4 md:px-8 py-10 md:py-16">
+          <div className="h-10 md:h-14 w-64 bg-zinc-200 animate-pulse mb-4" />
+          <div className="h-4 w-full max-w-xl bg-zinc-100 animate-pulse mb-2" />
+          <div className="h-4 w-3/4 max-w-lg bg-zinc-100 animate-pulse" />
+        </div>
+
+        {/* Horizontal Category Selector Skeleton */}
+        <div className="w-full border-b border-zinc-200">
+          <div className="flex items-center gap-8 px-4 md:px-8 py-5">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-4 w-20 bg-zinc-200 animate-pulse shrink-0" />
+            ))}
+          </div>
+        </div>
+
+        {/* Product Count Skeleton */}
+        <div className="px-4 md:px-8 py-4">
+          <div className="h-3 w-24 bg-zinc-200 animate-pulse" />
+        </div>
+
+        {/* Product Grid Skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-zinc-200 border-y border-zinc-200">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="bg-white flex flex-col">
+              <div className="w-full aspect-[3/4] bg-zinc-100 animate-pulse" />
+              <div className="p-4 md:p-6 flex flex-col items-center">
+                <div className="h-3 md:h-4 w-3/4 bg-zinc-200 animate-pulse mb-2" />
+                <div className="h-3 w-1/2 bg-zinc-200 animate-pulse" />
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
     );
   }

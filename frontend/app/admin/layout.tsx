@@ -33,8 +33,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!isAuthorized) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-black text-xs font-bold uppercase tracking-widest animate-pulse">
+      <main className="min-h-screen bg-white flex flex-col gap-4 items-center justify-center">
+        <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin" />
+        <p className="text-black text-[10px] font-bold uppercase tracking-widest animate-pulse">
           Verifying Access...
         </p>
       </main>
