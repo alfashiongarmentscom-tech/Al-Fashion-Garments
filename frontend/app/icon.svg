@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Clean white background -->
+  <rect width="512" height="512" rx="112" fill="#ffffff" />
+  
+  <!-- Outfitters Aesthetic: Heavy, Italic, Sans-Serif, Tight Tracking -->
+  <g 
+    font-family="'Arial Black', 'Impact', 'Helvetica Neue', sans-serif" 
+    font-weight="900" 
+    font-style="italic" 
+    fill="#1a1a1a" 
+    text-anchor="middle" 
+    dominant-baseline="middle"
+  >
+    <!-- We shift x to 48% because italic text leans right and needs visual centering -->
+    <text x="48%" y="32%" font-size="140" letter-spacing="-6">Al</text>
+    <text x="48%" y="55%" font-size="95" letter-spacing="-4">Fashion</text>
+    <text x="48%" y="76%" font-size="75" letter-spacing="-3">Garments</text>
+  </g>
+</svg>
