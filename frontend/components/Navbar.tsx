@@ -92,7 +92,7 @@ export default function Navbar() {
         onClick={() => setIsMenuOpen(false)}
       />
       <div 
-        className={`fixed top-0 right-0 h-[100svh] w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <button 
           onClick={() => setIsMenuOpen(false)}
@@ -103,14 +103,14 @@ export default function Navbar() {
         <div className="flex flex-col px-10 md:px-16 py-24 overflow-y-auto">
           
           <div className="flex flex-col space-y-6">
-            <a href="/shop" className="font-serif text-xl md:text-2xl uppercase tracking-widest text-black hover:text-zinc-500 transition-colors">
+            <Link href="/shop" className="font-serif text-xl md:text-2xl uppercase tracking-widest text-black hover:text-zinc-500 transition-colors">
               Shop All
-            </a>
+            </Link>
             
             {categories.map((cat) => (
-              <a key={cat.id} href={`/shop?category=${cat.id}`} className="font-serif text-xl md:text-2xl uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
+              <Link key={cat.id} href={`/shop?category=${cat.id}`} className="font-serif text-xl md:text-2xl uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
                 {cat.name}
-              </a>
+              </Link>
             ))}
           </div>
           
@@ -134,7 +134,7 @@ export default function Navbar() {
         onClick={() => setIsContactOpen(false)}
       />
       <div 
-        className={`fixed top-0 right-0 h-[100svh] w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isContactOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <button 
           onClick={() => setIsContactOpen(false)}

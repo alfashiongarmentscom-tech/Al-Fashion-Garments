@@ -2,9 +2,11 @@
 import { useState } from 'react';
 import { useCart } from '@/app/context/CartContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
-  const { cart, cartTotal } = useCart();
+  const { cart, cartTotal, clearCart } = useCart();
+  const router = useRouter();
   
   const [customer, setCustomer] = useState({
     name: '',
@@ -44,6 +46,12 @@ ${orderItems}
 
     const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+    
+    // Clear the cart so it doesn't stay full after ordering
+    clearCart();
+    
+    // Send the user back to the home page
+    router.push('/');
   };
 
   if (cart.length === 0) {

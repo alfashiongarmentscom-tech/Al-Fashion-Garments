@@ -1,23 +1,29 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 
-export default function ShopPage() {
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const urlCategory = searchParams.get('category');
+
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
 
+  // Reactively update the selected category whenever the URL changes
+  useEffect(() => {
+    if (urlCategory) {
+      setSelectedCategory(urlCategory);
+    } else {
+      setSelectedCategory('all');
+    }
+  }, [urlCategory]);
+
   useEffect(() => {
     async function fetchCatalog() {
-      // Read the URL to see if a category was clicked from the home page
-      const params = new URLSearchParams(window.location.search);
-      const urlCategory = params.get('category');
-      if (urlCategory) {
-        setSelectedCategory(urlCategory);
-      }
-
       const { data: catData } = await supabase.from('categories').select('*');
       if (catData) setCategories(catData);
 
@@ -28,6 +34,7 @@ export default function ShopPage() {
     }
     fetchCatalog();
   }, []);
+
   if (loading) {
     return (
       <main className="min-h-screen bg-white flex items-center justify-center">
@@ -113,5 +120,17 @@ export default function ShopPage() {
       </div>
       
     </main>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">Loading Collection...</p>
+      </main>
+    }>
+      <ShopContent />
+    </Suspense>
   );
 }

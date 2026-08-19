@@ -72,7 +72,6 @@ const compressImage = async (file: File, maxWidth = 1600, quality = 0.8): Promis
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
   
   const [activeTab, setActiveTab] = useState<'categories' | 'products'>('products');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -96,18 +95,9 @@ export default function AdminDashboard() {
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push('/login');
-      } else {
-        setIsAuthChecking(false);
-        fetchCategories(); 
-        fetchProducts();
-      }
-    };
-    checkUser();
-  }, [router]);
+  fetchCategories(); 
+  fetchProducts();
+}, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -209,6 +199,26 @@ export default function AdminDashboard() {
 
   const handleDeleteProduct = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
+    
+    // 1. Find the product in our current state to get its images
+    const productToDelete = products.find(p => p.id === id);
+
+    if (productToDelete && productToDelete.images && productToDelete.images.length > 0) {
+      // 2. Extract the exact storage paths from the public URLs
+      const pathsToDelete = productToDelete.images.map((url: string) => {
+        // Splits the URL to isolate the internal bucket path (e.g., 'products/123-abc.webp')
+        const parts = url.split('product-images/');
+        return parts.length > 1 ? parts[1] : null;
+      }).filter(Boolean);
+
+      // 3. Delete the files from the storage bucket
+      if (pathsToDelete.length > 0) {
+        const { error: storageError } = await supabase.storage.from('product-images').remove(pathsToDelete);
+        if (storageError) console.error("Error deleting images:", storageError);
+      }
+    }
+
+    // 4. Delete the database records
     await supabase.from('product_sizes').delete().eq('product_id', id);
     await supabase.from('products').delete().eq('id', id);
     fetchProducts();
@@ -280,11 +290,17 @@ export default function AdminDashboard() {
 
       let productId = editingProductId;
 
+      const safePrice = parseFloat(newProduct.price) || 0;
+      let currentSizes: any[] = [];
+
       if (editingProductId) {
+        const { data } = await supabase.from('product_sizes').select('size, stock').eq('product_id', editingProductId);
+        if (data) currentSizes = data;
+
         await supabase.from('products').update({
           name: newProduct.name,
           description: newProduct.description,
-          price: parseFloat(newProduct.price),
+          price: safePrice,
           category_id: newProduct.categoryId,
           images: finalImageUrls
         }).eq('id', editingProductId);
@@ -294,7 +310,7 @@ export default function AdminDashboard() {
         const { data: productData, error: productError } = await supabase.from('products').insert([{
           name: newProduct.name,
           description: newProduct.description,
-          price: parseFloat(newProduct.price),
+          price: safePrice,
           category_id: newProduct.categoryId,
           images: finalImageUrls
         }]).select().single();
@@ -303,13 +319,21 @@ export default function AdminDashboard() {
         productId = productData.id;
       }
 
-      const sizesToInsert = newProduct.sizes.map(s => ({
-        product_id: productId,
-        size: s.size,
-        stock: 999 
-      }));
+      // Map through the sizes from the state, skip empty ones, and preserve stock if it existed
+      const sizesToInsert = newProduct.sizes
+        .filter(s => s.size.trim() !== '')
+        .map(s => {
+          const existingSize = currentSizes.find(cs => cs.size === s.size);
+          return {
+            product_id: productId,
+            size: s.size,
+            stock: existingSize ? existingSize.stock : 999 // Keep old stock, or default to 999 for new sizes
+          };
+        });
 
-      await supabase.from('product_sizes').insert(sizesToInsert);
+      if (sizesToInsert.length > 0) {
+        await supabase.from('product_sizes').insert(sizesToInsert);
+      }
 
       alert(editingProductId ? 'Product updated successfully!' : 'Product published successfully!');
       cancelEditingProduct();
@@ -320,14 +344,6 @@ export default function AdminDashboard() {
       setIsProcessing(false);
     }
   };
-
-  if (isAuthChecking) {
-    return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-black text-xs font-bold uppercase tracking-widest animate-pulse">Verifying Access...</p>
-      </main>
-    );
-  }
 
   return (
     <main className="min-h-screen bg-white text-black pt-8 md:pt-28 pb-24 px-4 sm:px-8">
@@ -506,7 +522,7 @@ export default function AdminDashboard() {
                     {newProduct.sizes.map((s, idx) => (
                       <div key={idx} className="flex gap-4">
                         <input required type="text" placeholder="Size (e.g. S, M, L)" value={s.size} onChange={e => handleSizeChange(idx, e.target.value)} className="w-full p-3 text-sm border border-zinc-300 focus:outline-none focus:border-black transition-colors" />
-                        <button type="button" onClick={() => removeImage(idx)} className="text-zinc-400 hover:text-red-500 transition-colors px-2">
+                        <button type="button" onClick={() => removeSize(idx)} className="text-zinc-400 hover:text-red-500 transition-colors px-2">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                       </div>

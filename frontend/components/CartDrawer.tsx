@@ -34,7 +34,7 @@ export default function CartDrawer() {
       
       {/* Drawer Panel */}
       <div 
-        className={`fixed top-0 right-0 h-[100svh] w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white z-[60] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <button 
           onClick={closeCart}
